@@ -10,19 +10,19 @@
     <!-- 顯示實際操作資料庫時的SQL --> 
     <property name="show_sql">true</property> 
     <!-- 將顯示的SQL排版，方便觀看 -->
-    <property name="format_sql">true</property>
+    <property name="format_sql">false</property>
     <!-- SQL方言，這邊設定的是MySQL --> 
     <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property> 
     <!-- JDBC驅動程式 --> 
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property> 
     <!-- JDBC URL --> 
-    <property name="connection.url">jdbc:mysql://localhost:3306/priness_connect?serverTimezone=UTC</property> 
+    <property name="connection.url">jdbc:mysql://localhost:3306/totemkevin?serverTimezone=UTC</property> 
     <!-- 資料庫使用者 --> 
     <property name="connection.username">kevin</property> 
     <!-- 資料庫密碼 --> 
     <property name="connection.password">test</property>
     
-    <property name="hibernate.hbm2ddl.auto">create</property>
+    <property name="hibernate.hbm2ddl.auto">update</property>
 
     <!-- 以下設置物件與資料庫表格映射文件 --> 
     <mapping class="dao.Role" />

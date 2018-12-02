@@ -21,6 +21,7 @@ public class VS {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	private String uuid;
 	private long myTeam;
 	private long enemyTeam;
 	private Integer win;

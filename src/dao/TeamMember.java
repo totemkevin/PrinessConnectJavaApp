@@ -6,6 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -21,9 +25,13 @@ public class TeamMember {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	private long team;
-	private long roleId;
+	private String uuid;
 	private Integer star;
 	private Date createDtae;
 	private Date modifyDtae;
+	
+	@OneToOne
+	private Role role;
+	@ManyToOne
+	private Team team;
 }

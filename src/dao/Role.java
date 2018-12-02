@@ -21,6 +21,7 @@ public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	private String uuid;
 	private String name;
 	private String img;
 	private Date createDtae;
