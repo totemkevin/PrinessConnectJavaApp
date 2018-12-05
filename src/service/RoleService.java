@@ -4,16 +4,31 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.Session;
 import dao.Role;
+import dao.TeamMember;
 import entity.RoleEntity;
 import util.HibernateUtil;
 public class RoleService {
 	
 	public Role findById(long id) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		
+		CriteriaQuery<Role> criteriaQuery = builder.createQuery(Role.class);
+		Root<Role> root = criteriaQuery.from(Role.class);
+		criteriaQuery.where(builder.equal(root.get("id"), id));
+		List<Role> list = session.createQuery(criteriaQuery).getResultList();
+		if(list.size()==1) {
+			return list.get(0);
+		}
+		
 		return null;
-	
 	}
 	
 	public List<Role> findAll() {

@@ -1,14 +1,18 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class TeamEntity {
-	private Long id;
-	private Long id2;
-	private String name;
+	private String type;
+	private String note;
+	
+	private List<TeamMemberEntity> teamMemberEntitys = new ArrayList<TeamMemberEntity>();
 }

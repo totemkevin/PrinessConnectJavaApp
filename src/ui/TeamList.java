@@ -13,7 +13,11 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import component.TeamComponent;
+import dao.Role;
+import entity.TeamEntity;
+import entity.TeamMemberEntity;
 import loader.ImgLoader;
+import logic.TeamLogic;
 import util.HibernateUtil;
 
 import javax.swing.JButton;
@@ -26,6 +30,10 @@ import java.awt.event.ActionEvent;
 public class TeamList extends JFrame {
 
 	private JPanel contentPane;
+	private int page = 0;
+	private int limit = 4;
+	private JPanel listPanel;
+	private JScrollPane scrollPane;
 
 	/**
 	 * Launch the application.
@@ -68,11 +76,22 @@ public class TeamList extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		JPanel listPanel = new JPanel();
+		listPanel = new JPanel();
 		listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
 		
+		TeamLogic teamLogic = new TeamLogic();
+		List<TeamEntity> list = teamLogic.getTeams(page*4,limit);
+		for(TeamEntity teamEntity :list) {
+			List<Role> roleList = new ArrayList<Role>();
+			List<TeamMemberEntity> tmList = teamEntity.getTeamMemberEntitys();
+			for(TeamMemberEntity tm : tmList) {
+				roleList.add(tm.getRole());
+			}
+			TeamComponent tc = new TeamComponent(teamEntity,roleList);
+			listPanel.add(tc);
+		}
 		
-		JScrollPane scrollPane = new JScrollPane(listPanel,
+		scrollPane = new JScrollPane(listPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 	            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(10, 5, 930, 665);
@@ -85,10 +104,93 @@ public class TeamList extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				CreateTeam createTeam = new CreateTeam();
 				createTeam.setVisible(true);
+				dispose();
 			}
 		});
 		button.setBounds(1149, 5, 99, 27);
 		contentPane.add(button);
+		
+		JButton btnNewButton = new JButton("上一頁");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(page == 0) {
+					JOptionPane.showMessageDialog(null, "目前是第一頁", "Error", JOptionPane.INFORMATION_MESSAGE);
+					return ;
+				}
+				page --;
+				
+				contentPane.remove(listPanel);
+				contentPane.remove(scrollPane);
+				listPanel = new JPanel();
+				listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
+				
+				TeamLogic teamLogic = new TeamLogic();
+				List<TeamEntity> list = teamLogic.getTeams(page*4,limit);
+				for(TeamEntity teamEntity :list) {
+					List<Role> roleList = new ArrayList<Role>();
+					List<TeamMemberEntity> tmList = teamEntity.getTeamMemberEntitys();
+					for(TeamMemberEntity tm : tmList) {
+						roleList.add(tm.getRole());
+					}
+					TeamComponent tc = new TeamComponent(teamEntity,roleList);
+					listPanel.add(tc);
+				}
+				scrollPane = new JScrollPane(listPanel,
+						JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+			            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+				scrollPane.setBounds(10, 5, 930, 665);
+				scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+				contentPane.setLayout(null);
+				contentPane.add(scrollPane);
+				
+				contentPane.revalidate();
+				contentPane.repaint();
+			}
+		});
+		btnNewButton.setBounds(954, 5, 99, 27);
+		contentPane.add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("下一頁");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				page ++;
+				List<TeamEntity> list = teamLogic.getTeams(page*4,limit);
+				if(list.size() == 0) {
+					JOptionPane.showMessageDialog(null, "目前是最後一頁", "Error", JOptionPane.INFORMATION_MESSAGE);
+					page --;
+					return ;
+				}
+				contentPane.remove(listPanel);
+				contentPane.remove(scrollPane);
+				listPanel = new JPanel();
+				listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
+				
+				TeamLogic teamLogic = new TeamLogic();
+				
+				
+				for(TeamEntity teamEntity :list) {
+					List<Role> roleList = new ArrayList<Role>();
+					List<TeamMemberEntity> tmList = teamEntity.getTeamMemberEntitys();
+					for(TeamMemberEntity tm : tmList) {
+						roleList.add(tm.getRole());
+					}
+					TeamComponent tc = new TeamComponent(teamEntity,roleList);
+					listPanel.add(tc);
+				}
+				scrollPane = new JScrollPane(listPanel,
+						JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+			            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+				scrollPane.setBounds(10, 5, 930, 665);
+				scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+				contentPane.setLayout(null);
+				contentPane.add(scrollPane);
+				
+				contentPane.revalidate();
+				contentPane.repaint();
+			}
+		});
+		btnNewButton_1.setBounds(954, 45, 99, 27);
+		contentPane.add(btnNewButton_1);
 	}
 
 }

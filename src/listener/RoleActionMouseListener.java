@@ -31,14 +31,12 @@ public class RoleActionMouseListener implements MouseListener  {
 	public void mouseClicked(MouseEvent e) {
 		List<Role> selectList = createTeam.selectList;
 		if(selectList .contains(role)) {
-			System.out.println("remove role");
 			selectList.remove(role);
 		}else {
 			if(selectList.size()>=5) {
 				JOptionPane.showMessageDialog(null, "隊伍不可超過五人", "Error", JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
-			System.out.println("add role");
 			selectList.add(role);
 		}
 	

@@ -29,10 +29,8 @@ public class RoleMouseListener implements MouseListener {
 			return;
 		}
 		if(removeAction) {
-			System.out.println("remove role");
 			selectList.remove(role);
 		}else {
-			System.out.println("add role");
 			selectList.add(role);
 		}
 		teamComponent.repaint();

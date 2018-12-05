@@ -23,10 +23,8 @@ public class ImgLoader {
 	public void load() {
 		File f = new File(PATH);
 		String[] n = f.list();
-		System.out.println("len"+n.length);
 	    for (int i=0; i<n.length; i++){
 	    	File child = new File(PATH+File.separator+n[i]);
-	        System.out.println(child.getName());
 	        if(!child.isDirectory()){
 	        	fileMap.put(child.getName(), child);
 	        }

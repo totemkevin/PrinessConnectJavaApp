@@ -1,5 +1,6 @@
 package logic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,24 +21,77 @@ import dao.TeamMember;
 import entity.RoleEntity;
 import entity.TeamEntity;
 import entity.TeamMemberEntity;
+import entity.TeamSearchEntiy;
+import service.RoleService;
+import service.TeamMemberService;
+import service.TeamService;
 import util.HibernateUtil;
 
 public class TeamLogic {
-	public void getTeams() {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		CriteriaBuilder cb = session.getCriteriaBuilder();
-		CriteriaQuery query = cb.createQuery(TeamEntity.class);
-
-		Root<Team> teamTable = query.from(Team.class);
-		Join<Team, TeamMember> teamMemberJoin = teamTable.join("teamMembers", JoinType.INNER);
-		Root<Team> teamMemberTable = query.from(TeamMember.class);
-		Join<TeamMember, Role> roleJoin = teamMemberTable.join("role", JoinType.INNER);
-
-		query.multiselect(teamTable.get("id"),teamMemberJoin.get("id"),roleJoin.get("name"));
+	public List<TeamEntity> getTeams(int start,int limit) {
+		TeamService teamService = new TeamService();
+		TeamMemberService teamMemberService = new TeamMemberService();
+		RoleService roleService = new RoleService();
 		
-		TypedQuery<TeamEntity> typedQuery = session.createQuery(query);
+		List<TeamEntity> teamEntityList = new ArrayList<TeamEntity>();
+		List<Team> teamList = teamService.findAll(start,limit);
 
-		List resultList = typedQuery.getResultList();
-		System.out.println(resultList);
+		for(Team team : teamList) {
+			List<TeamMember> tmList = teamMemberService.getByTeamId(team.getId());
+			List<TeamMemberEntity> teamMemberEntitys = new ArrayList<TeamMemberEntity>();
+			
+			for(TeamMember tm : tmList) {
+				TeamMemberEntity teamMemberEntity = new TeamMemberEntity();
+				Role role = roleService.findById(tm.getRoleId());
+				teamMemberEntity.setRole(role);
+				
+				teamMemberEntitys.add(teamMemberEntity);
+			}
+			
+			TeamEntity teamEntity = new TeamEntity();
+			teamEntity.setType(team.getType());
+			teamEntity.setNote(team.getNote());
+			teamEntity.setTeamMemberEntitys(teamMemberEntitys);
+			teamEntityList.add(teamEntity);
+		}
+		return teamEntityList;
+	}
+	
+	public void save(String note, String type,List<Role> roleList) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Team team = new Team();
+		team.setNote(note);
+		team.setType(type);
+		Serializable id = session.save(team);
+		
+		for(Role role: roleList) {
+			TeamMember teamMember = new TeamMember();
+			teamMember.setTeamId((Long) id);
+			teamMember.setRoleId(role.getId());
+			session.save(teamMember);
+		}
+		session.getTransaction().commit();
+	}
+	
+	public void search(List<Role> include, List<Role> notInclude, int start, int limit) {
+		System.out.println("1");
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		System.out.println("2");
+		CriteriaQuery<Team> query = builder.createQuery(Team.class);
+		System.out.println("3");
+		Root<Team> root = query.from(Team.class);
+		System.out.println("4");
+		query.select(root);
+		System.out.println("5");
+		Query<Team> q=session.createQuery(query);
+		System.out.println("6");
+		List<Team> teams=q.list();
+		System.out.println(teams);
+//		Join<Team,TeamMember> orders = root.join(Team_.);
+		
+		session.getTransaction().commit();
 	}
 }

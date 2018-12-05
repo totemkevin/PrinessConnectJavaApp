@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Table(name="role")
 public class Role {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String uuid;
 	private String name;

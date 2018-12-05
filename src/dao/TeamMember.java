@@ -23,15 +23,12 @@ import lombok.NoArgsConstructor;
 @Table(name="team_member")
 public class TeamMember {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String uuid;
 	private Integer star;
 	private Date createDtae;
 	private Date modifyDtae;
-	
-	@OneToOne
-	private Role role;
-	@ManyToOne
-	private Team team;
+	private Long teamId;
+	private Long roleId;
 }

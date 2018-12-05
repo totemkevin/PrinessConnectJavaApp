@@ -76,7 +76,7 @@ public class Init implements Observer {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 840, 412);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		Image login = ImgLoader.getInstance().getImageByName("login.png");
@@ -88,15 +88,15 @@ public class Init implements Observer {
 		lblNewLabel.setIcon(icon);
 		frame.getContentPane().add(lblNewLabel);
 		
-		JLabel lblConnectDatabase = new JLabel("connect database");
+		JLabel lblConnectDatabase = new JLabel("資料庫狀態 : ");
 		lblConnectDatabase.setBounds(10, 334, 103, 19);
 		frame.getContentPane().add(lblConnectDatabase);
 		
-		lblStatus = new JLabel("status");
-		lblStatus.setBounds(122, 334, 57, 19);
+		lblStatus = new JLabel("資料庫連線中...");
+		lblStatus.setBounds(122, 334, 225, 19);
 		frame.getContentPane().add(lblStatus);
 		
-		btnNewButton = new JButton("New button");
+		btnNewButton = new JButton("Start");
 		btnNewButton.setEnabled(false);
 		btnNewButton.setBounds(709, 330, 99, 27);
 		btnNewButton.addActionListener(new ActionListener() {
@@ -113,7 +113,7 @@ public class Init implements Observer {
 		    @Override
 		    public void windowClosing(WindowEvent e) {
 		        int confirm = JOptionPane.showOptionDialog(
-		             null, "Are You Sure to Close Application?", 
+		        	frame, "Are You Sure to Close Application?", 
 		             "Exit Confirmation", JOptionPane.YES_NO_OPTION, 
 		             JOptionPane.QUESTION_MESSAGE, null, null, null);
 		        if (confirm == 0) {

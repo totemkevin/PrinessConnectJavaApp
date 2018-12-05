@@ -9,9 +9,11 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import component.TeamComponent;
+import loader.ImgLoader;
 
 import javax.swing.JLabel;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ public class IndexUI extends JFrame {
 	 */
 	public IndexUI() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1280, 720);
+		setBounds(100, 100, 798, 505);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -41,7 +43,8 @@ public class IndexUI extends JFrame {
 				addRole.setVisible(true);
 			}
 		});
-		btnNewButton.setBounds(1095, 13, 151, 27);
+		btnNewButton.setBounds(620, 13, 151, 27);
+		btnNewButton.setEnabled(false);
 		contentPane.add(btnNewButton);
 		
 		JButton button = new JButton("±`¥Î¶¤¥î¬d¸ß");
@@ -51,8 +54,14 @@ public class IndexUI extends JFrame {
 				teamList.setVisible(true);
 			}
 		});
-		button.setBounds(1095, 53, 151, 27);
+		button.setBounds(620, 53, 151, 27);
 		contentPane.add(button);
+		
+		JLabel lblNewLabel = new JLabel();
+		lblNewLabel.setBounds(15, 15, 591, 402);
+		Icon icon = ImgLoader.getInstance().getIconByNameResize("party.png", 591, 402);
+		lblNewLabel.setIcon(icon);
+		contentPane.add(lblNewLabel);
 		
 	}
 }
